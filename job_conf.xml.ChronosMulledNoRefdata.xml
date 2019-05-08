@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<job_conf>
+    <plugins>
+        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="4"/>
+        <plugin id="chronos" type="runner" load="galaxy.jobs.runners.chronos:ChronosJobRunner" workers="4">
+            <param id="chronos"></param>
+            <!-- Hostname which runs Chronos instance. -->
+            <param id="owner"></param>
+            <!-- The email address of the person responsible for the job. -->
+            <param id="username"></param>
+            <!-- Username to access Mesos cluster. -->
+            <param id="password"></param>
+            <!-- Password to access Mesos cluster. -->
+            <param id="insecure">false</param>
+            <!-- True to communicate with Chronos over HTTPS; false otherwise-->
+        </plugin>
+    </plugins>
+    <handlers default="handlers">
+        <handler id="handler0" tags="handlers"/>
+        <handler id="handler1" tags="handlers"/>
+        <handler id="handler2" tags="handlers"/>
+        <handler id="handler3" tags="handlers"/>
+    </handlers>
+    <destinations default="chronos_dest">
+        <destination id="local" runner="local">
+		<param id="local_slots">2</param>
+	</destination>
+       <destination id="chronos_dest" runner="chronos">
+            <param id="docker_enabled">true</param>
+            <param id="docker_memory">512</param>
+            <param id="docker_cpu">2</param>
+	    <param id="volumes">/export/galaxy/database/</param>
+	<!-- <param id="docker_volumes">$galaxy_root:ro,$tool_directory:rw,$galaxy_root/database/tmp:rw,$job_directory:rw,$working_directory:rw,$default_file_path:rw</param>-->
+            <param id="max_retries">2</param>
+        </destination>
+    </destinations>
+    <tools>
+	<tool id="upload1" destination="local"/>
+    </tools>
+
+    <limits>
+	<limit type="registered_user_concurrent_jobs">100</limit>
+        <limit type="unregistered_user_concurrent_jobs">0</limit>
+	<limit type="job_walltime">72:00:00</limit>
+       	<limit type="output_size">268435456000</limit> 
+    </limits>
+</job_conf>
+
