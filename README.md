@@ -1,1 +1,1 @@
-# chronos-job_conf-galaxy
+# various-job-conf-galaxy
