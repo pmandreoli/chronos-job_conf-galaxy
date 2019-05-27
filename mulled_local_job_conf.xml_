@@ -1,4 +1,3 @@
-<!-- this configuration need  galaxy version >= 18.09 -->
 <?xml version="1.0"?>
 <job_conf>
     <plugins>
@@ -10,14 +9,15 @@
         <handler id="handler2" tags="handlers"/>
         <handler id="handler3" tags="handlers"/>
     </handlers>
-    <destinations default="singularity_local" >
+    <destinations default="docker_local" >
         <destination id="local" runner="local">
                 <param id="local_slots">2</param>
         </destination>
-        <destination id="singularity_local" runner="local">
-          <param id="singularity_enabled">true</param>
-     	  <param id="singularity_volumes">$galaxy_root:ro,$tool_directory:rw,$galaxy_root/database/tmp:rw,$job_directory:rw,$working_directory:rw,$default_file_path:rw,/cvmfs/singularity.galaxyproject.org:ro</param>
-	<param id="singularity_image_dir">/cvmfs/singuarity.galaxyproject.org/all</param>
+        <destination id="docker_local" runner="local">
+                <param id="local_slots">2</param>
+                <param id="docker_enabled">true</param>
+		<param id="docker_set_user">root</param>
+		<param id="docker_volumes">$galaxy_root:ro,$tool_directory:rw,$galaxy_root/database/tmp:rw,$job_directory:rw,$working_directory:rw,$default_file_path:rw ,/cvmfs:ro</param>
         </destination>
     </destinations>
    <tools>
