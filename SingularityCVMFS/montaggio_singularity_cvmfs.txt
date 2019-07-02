@@ -1,0 +1,33 @@
+KEY
+
+
+
+galaxy@vnode-0:/etc/cvmfs/keys$ cat singularity.galaxyproject.org.pub 
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt977djqKnD4WbYNq8VtU
+v9b8BgFzo1wh8rEUdj/2W9IvLXr5iWRrk1OvyZugYGxUg2JSVxiSXJhP1m8uBfBG
+aX2jn4iAq1suuIxJ6UMO+SYR/9yUANY/JKvfI9qHN9ItXxYveRXwORWb6s3zyCm3
+FFTRTUVQ5NFC+yT13BeIKyLMhT8yMSnlZ/5f8kuwSC1v/2QcC6UWDrHaUcEGWcHS
+EfiTov/pVXq0Hv3M2kwBWMqWeFey4WbnuNOCXYrYy9VCxmPAtO0TjFuThMr9XyWc
+Zu859ZLVjmkMxPxEPNxgNnc+DohK5wFPt7MHSejvCmd1J8iL4DOXUN2VvgJ9NrUN
+hwIDAQAB
+-----END PUBLIC KEY-----
+
+
+
+
+galaxy@vnode-0:/etc/cvmfs$ cat default.local
+CVMFS_REPOSITORIES="singularity.galaxyproject.org"
+CVMFS_HTTP_PROXY="DIRECT"
+CVMFS_QUOTA_LIMIT="4000"
+CVMFS_CACHE_BASE="/srv/cvmfs/cache"
+CVMFS_USE_GEOAPI=yes
+
+galaxy@vnode-0:/etc/cvmfs/config.d$ cat singularity.galaxyproject.org.conf 
+CVMFS_SERVER_URL="http://cvmfs1-tacc0.galaxyproject.org/cvmfs/@fqrn@;http://cvmfs1-iu0.galaxyproject.org/cvmfs/@fqrn@;http://cvmfs1-psu0.galaxyproject.org/cvmfs/@fqrn@;http://galaxy.jrc.ec.europa.eu:8008/cvmfs/@fqrn@;http://cvmfs1-mel0.gvl.org.au/cvmfs/@fqrn@;http://cvmfs1-ufr0.galaxyproject.eu/cvmfs/@fqrn@" 
+CVMFS_PUBLIC_KEY=/etc/cvmfs/keys/singularity.galaxyproject.org.pub
+CVMFS_HTTP_PROXY=DIRECT
+
+sudo cvmfs_config chksetup
+
+sudo mount -t cvmfs singularity.galaxyproject.org /cvmfs/singularity.galaxyproject.org
