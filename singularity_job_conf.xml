@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<job_conf>
+    <plugins>
+        <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="2"/>
+    </plugins>
+    <handlers default="handlers">
+        <handler id="handler0" tags="handlers"/>
+        <handler id="handler1" tags="handlers"/>
+        <handler id="handler2" tags="handlers"/>
+        <handler id="handler3" tags="handlers"/>
+    </handlers>
+    <destinations default="singularity_local" >
+        <destination id="local" runner="local">
+                <param id="local_slots">2</param>
+        </destination>
+        <destination id="docker_local" runner="local">
+                <param id="local_slots">2</param>
+                <param id="docker_enabled">true</param>
+		<param id="docker_set_user">root</param>
+		<param id="docker_volumes">$galaxy_root:ro,$tool_directory:rw,$galaxy_root/database/tmp:rw,$job_directory:rw,$working_directory:rw,$default_file_path:rw ,/cvmfs:ro</param>
+	</destination>
+        <destination id="singularity_local" runner="local">
+          <param id="singularity_enabled">true</param>
+     	  <param id="singularity_volumes">$galaxy_root:ro,$tool_directory:rw,$galaxy_root/database/tmp:rw,$job_directory:rw,$working_directory:rw,$default_file_path:rw,/cvmfs/singularity.galaxyproject.org:ro,/refdata/elixir-italy.galaxy.refdata:ro</param>
+	<param id="singularity_image_dir">/cvmfs/singuarity.galaxyproject.org/all</param>
+        </destination>
+    </destinations>
+   <tools>
+      <tool id="upload1" destination="local"/>
+   </tools>
+    <limits>
+        <limit type="registered_user_concurrent_jobs">4</limit>
+        <limit type="unregistered_user_concurrent_jobs">0</limit>
+        <limit type="job_walltime">72:00:00</limit>
+        <limit type="output_size">268435456000</limit>
+    </limits>
+</job_conf>
+
+

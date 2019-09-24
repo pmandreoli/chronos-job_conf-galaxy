@@ -1,0 +1,54 @@
+
+---
+- hosts: localhost
+  remote_user: root
+  vars:
+    gopks: "go1.12.5.linux-amd64.tar.gz"
+  tasks:
+  - name: Install singularity dependencies
+    yum:
+      name:
+        - openssl-devel
+        - libuuid-devel
+        - libseccomp-devel
+        - wget
+        - squashfs-tools
+      state: present
+  - name: download GO 
+    get_url:
+      url: https://dl.google.com/go/{{ gopks }}
+      dest: /home/galaxy/{{ gopks }}
+      force_basic_auth:
+  - name: unarchive go
+    unarchive:
+      src: /home/galaxy/{{ gopks }}
+      dest: /home/galaxy
+  - name: insert in .bashrc file export for GO 
+    lineinfile:
+      dest: /home/galaxy/.bashrc 
+      line: export PATH=$PATH:/home/galaxy/go/bin
+  - name: source .bashrc 
+    remote_user: galaxy   
+    shell: source /home/galaxy/.bashrc
+    args:
+      executable: /bin/bash
+  - name: install repo epel
+    remote_user: root
+    yum:
+      name: epel-release 
+      state: present
+  - name: update yum after epel-add
+    yum: 
+      name: '*' 
+      state: latest
+  - name: final installation singularity
+    yum:
+      name: 
+        - singularity-runtime
+        - singularity
+      state: present
+ 
+
+
+
+ 
